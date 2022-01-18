@@ -1,5 +1,7 @@
 package com.metehanbolat.flows
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
@@ -44,7 +46,6 @@ class MyViewModel : ViewModel() {
             }
 
             /*
-
             // Sonuncuyu göster demek değil bu eğer veri geliyorsa onu bekler eğer zaten gelmişse tek tek görürüz.
             // Örneğin delay yazarsak sadece 0 değerini görüyorken delay yazmazsak 10 dan geriye sayar.
             countDownTimerFlow.collectLatest {
@@ -61,5 +62,33 @@ class MyViewModel : ViewModel() {
             println(it)
         }.launchIn(viewModelScope)
          */
+    }
+
+    // LiveData comparisons
+
+    // MutableLiveData'da ilk değer vermek zorunda değiliz
+    private val _liveData = MutableLiveData<String>("KotlinLiveData")
+    val liveData : LiveData<String> = _liveData
+
+    // State'lerde ilk değer vermek zorundayız.
+    private val _stateFlow = MutableStateFlow("KotlinStateFlow")
+    val stateFlow = _stateFlow.asStateFlow()
+
+    // Shared Flow'da ilk değer verilmez. Emit vardır ve coroutinescope gerekir. Modifiye edilebilir yapıdadır.
+    private val _sharedFlow = MutableSharedFlow<String>()
+    val sharedFlow = _sharedFlow.asSharedFlow()
+
+    fun changeLiveDataValue() {
+        _liveData.value = "Live Data"
+    }
+
+    fun changeStateFlowValue() {
+        _stateFlow.value = "State Flow"
+    }
+
+    fun changeSharedFlowValue() {
+        viewModelScope.launch {
+            _sharedFlow.emit("Shared Flow")
+        }
     }
 }
