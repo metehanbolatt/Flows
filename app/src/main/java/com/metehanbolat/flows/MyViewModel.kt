@@ -3,10 +3,7 @@ package com.metehanbolat.flows
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class MyViewModel : ViewModel() {
@@ -31,6 +28,7 @@ class MyViewModel : ViewModel() {
 
     private fun collectInViewModel() {
 
+        /*
         // collect verileri toplama işlemi yaptığımız yer yani önce 3 ile bölünenleri filtreleyip ardından collect ile topluyoruz
         viewModelScope.launch {
             countDownTimerFlow
@@ -45,5 +43,11 @@ class MyViewModel : ViewModel() {
                 println("Counter is: $it")
             }
         }
+         */
+
+        // Yukarıda yapılan işlem yerine onEach metodu da kullanılabilir.
+        countDownTimerFlow.onEach {
+            println(it)
+        }.launchIn(viewModelScope)
     }
 }
