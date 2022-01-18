@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class MyViewModel : ViewModel() {
@@ -29,8 +31,17 @@ class MyViewModel : ViewModel() {
 
     private fun collectInViewModel() {
 
+        // collect verileri toplama işlemi yaptığımız yer yani önce 3 ile bölünenleri filtreleyip ardından collect ile topluyoruz
         viewModelScope.launch {
-            countDownTimerFlow.collect {
+            countDownTimerFlow
+                .filter {
+                    it %3 == 0
+                }
+                // Filtreleme işlemi yaptıktan sonra mapping yaparak farklı değerler elde edebiliriz.
+                .map {
+                    it + it
+                }
+                .collect {
                 println("Counter is: $it")
             }
         }
