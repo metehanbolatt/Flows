@@ -1,8 +1,11 @@
 package com.metehanbolat.flows
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 
 class MyViewModel : ViewModel() {
 
@@ -17,6 +20,19 @@ class MyViewModel : ViewModel() {
             delay(1000)
             counter--
             emit(counter)
+        }
+    }
+
+    init {
+        collectInViewModel()
+    }
+
+    private fun collectInViewModel() {
+
+        viewModelScope.launch {
+            countDownTimerFlow.collect {
+                println("Counter is: $it")
+            }
         }
     }
 }
