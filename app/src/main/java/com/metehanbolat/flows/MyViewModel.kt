@@ -28,9 +28,9 @@ class MyViewModel : ViewModel() {
 
     private fun collectInViewModel() {
 
-        /*
         // collect verileri toplama işlemi yaptığımız yer yani önce 3 ile bölünenleri filtreleyip ardından collect ile topluyoruz
         viewModelScope.launch {
+
             countDownTimerFlow
                 .filter {
                     it %3 == 0
@@ -42,12 +42,24 @@ class MyViewModel : ViewModel() {
                 .collect {
                 println("Counter is: $it")
             }
-        }
-         */
 
+            /*
+
+            // Sonuncuyu göster demek değil bu eğer veri geliyorsa onu bekler eğer zaten gelmişse tek tek görürüz.
+            // Örneğin delay yazarsak sadece 0 değerini görüyorken delay yazmazsak 10 dan geriye sayar.
+            countDownTimerFlow.collectLatest {
+                delay(2000)
+                println("Counter is: $it")
+            }
+             */
+        }
+
+
+        /*
         // Yukarıda yapılan işlem yerine onEach metodu da kullanılabilir.
         countDownTimerFlow.onEach {
             println(it)
         }.launchIn(viewModelScope)
+         */
     }
 }
